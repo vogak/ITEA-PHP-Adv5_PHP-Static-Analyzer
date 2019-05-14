@@ -18,12 +18,10 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Class ClassAnalysisStart
- *
  * Command for getting class anallise
  *
  * Example for usage
- * ./bin/console stat:command-name <full-class-name>
+ * ./bin/console stat:analyzer-class <full-class-name>
  *
  *
  * @author Pavel Peregin <pereginp@gmail.com>
@@ -36,17 +34,12 @@ final class ClassAnalysisStart extends Command
     protected function configure()
     {
         $this
-            ->setName('stat:command-name')
+            ->setName('stat:analyzer-class')
             ->setDescription('Show analise of classes')
             ->addArgument(
                 'full-class-name',
                 InputArgument::REQUIRED,
                 'Name of classes of needed developer'
-            )
-            ->addArgument(
-                'project-src',
-                InputArgument::REQUIRED,
-                'Absolute path to project source code.'
             )
             ;
     }
@@ -57,9 +50,8 @@ final class ClassAnalysisStart extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fullCalssName = $input->getArgument('full-class-name');
-        $projectSrc = $input->getArgument('project-src');
 
-        $analyzer = new ClassAnalysis($projectSrc, $fullCalssName);
+        $analyzer = new ClassAnalysis($fullCalssName);
         $type = $analyzer->analysisType();
         $count = $analyzer->analysisCount();
 
@@ -77,12 +69,12 @@ final class ClassAnalysisStart extends Command
                                            </info>',
             $fullCalssName,
             $type,
-            $count['propPublic'],
-            $count['propProtected'],
-            $count['propPrivate'],
-            $count['funcPublic'],
-            $count['funcProtected'],
-            $count['funcPrivate']
+            $count->propPublic,
+            $count->propProtected,
+            $count->propPrivate,
+            $count->funcPublic,
+            $count->funcProtected,
+            $count->funcPrivate
             ));
     }
 }

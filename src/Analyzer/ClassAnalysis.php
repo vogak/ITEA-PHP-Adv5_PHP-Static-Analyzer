@@ -13,11 +13,10 @@ namespace Greeflas\StaticAnalyzer\Analyzer;
 
 use Greeflas\StaticAnalyzer\ClassInfoHelperCountPropertiesAndMethod;
 use Greeflas\StaticAnalyzer\ClassInfoHelperTypeClass;
+use Greeflas\StaticAnalyzer\ClassDataCount;
 use Symfony\Component\Finder\Finder;
 
 /**
- * Class ClassAnalysis
- *
  * An analyzer that provides the number of properties and methods in a given PHP class.
  *
  *
@@ -25,12 +24,10 @@ use Symfony\Component\Finder\Finder;
  */
 final class ClassAnalysis
 {
-    private $projectDir;
     private $nameClass;
 
-    public function __construct(string $projectDir, string $nameClass)
+    public function __construct(string $nameClass)
     {
-        $this->projectDir = $projectDir;
         $this->nameClass = $nameClass;
     }
 
@@ -40,11 +37,8 @@ final class ClassAnalysis
     public function analysisType(): string
     {
         /* @var \Symfony\Component\Finder\SplFileInfo[] $finder */
-        $finder = Finder::create()
-            ->in($this->projectDir)
-            ->files()
-            ->name($this->nameClass . '.php')
-        ;
+        $finder = new Finder();
+        $finder->files()->in(__DIR__);
 
         $typeClass = null;
 
@@ -58,14 +52,11 @@ final class ClassAnalysis
     /**
      * @return array
      */
-    public function analysisCount(): array
+    public function analysisCount(): ClassDataCount
     {
         /* @var \Symfony\Component\Finder\SplFileInfo[] $finder */
-        $finder = Finder::create()
-            ->in($this->projectDir)
-            ->files()
-            ->name($this->nameClass . '.php')
-        ;
+        $finder = new Finder();
+        $finder->files()->in(__DIR__);
 
         $count = null;
 

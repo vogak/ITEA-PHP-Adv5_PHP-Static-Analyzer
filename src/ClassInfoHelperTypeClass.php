@@ -18,6 +18,9 @@ namespace Greeflas\StaticAnalyzer;
  */
 final class ClassInfoHelperTypeClass
 {
+    const NORMAL = 'normal';
+    const FINAL = 'final';
+    const ABSTRACT = 'abstract';
     /**
      * Class should not be instantiated.
      */
@@ -36,15 +39,15 @@ final class ClassInfoHelperTypeClass
     {
         $contents = \file_get_contents($filePath);
 
-        $type = 'normal';
+        $type = self::NORMAL;
 
         foreach (\token_get_all($contents) as $token) {
             $hasTokenInfo = \is_array($token);
 
             if ($hasTokenInfo && \T_FINAL == $token[0]) {
-                $type = 'final';
+                $type = self::FINAL;
             } elseif ($hasTokenInfo && \T_ABSTRACT == $token[0]) {
-                $type = 'abstract';
+                $type = self::ABSTRACT;
             } elseif ($hasTokenInfo && \T_CLASS == $token[0]) {
                 break;
             }

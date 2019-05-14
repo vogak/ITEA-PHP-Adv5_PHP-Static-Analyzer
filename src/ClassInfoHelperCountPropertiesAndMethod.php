@@ -11,6 +11,9 @@
 
 namespace Greeflas\StaticAnalyzer;
 
+use \Greeflas\StaticAnalyzer\ClassDataCount;
+use phpDocumentor\Reflection\Types\Integer;
+
 /**
  * Helper class for getting the number of properties and methods in PHP classes.
  *
@@ -19,25 +22,17 @@ namespace Greeflas\StaticAnalyzer;
 final class ClassInfoHelperCountPropertiesAndMethod
 {
     /**
-     * Class should not be instantiated.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * Gets number of properties and methods in PHP class.
      *
      * @param string $filePath Path to PHP file with class.
      *
      * @return array
      */
-    public static function getCountMethodFromFile(string $filePath): array
+    public static function getCountMethodFromFile(string $filePath): ClassDataCount
     {
         $contents = \file_get_contents($filePath);
 
-        $count['propPublic'] = $count['propProtected'] = $count['propPrivate'] =
-        $count['funcPublic'] = $count['funcProtected'] = $count['funcPrivate'] = 0;
+        $count = new ClassDataCount();
         $gettingClass = $getMethodOrProperties = false;
         $getPublic = $getProtected = $getPrivate = false;
 
@@ -63,29 +58,29 @@ final class ClassInfoHelperCountPropertiesAndMethod
                 if ($getMethodOrProperties) {
                     if (';' === $token) {
                         if ($getPublic) {
-                            $count['propPublic']++;
+                            $count->propPublic++;
                             $getMethodOrProperties = false;
                             $getPublic = false;
                         } elseif ($getProtected) {
-                            $count['propProtected']++;
+                            $count->propProtected++;
                             $getMethodOrProperties = false;
                             $getProtected = false;
                         } elseif ($getPrivate) {
-                            $count['propPrivate']++;
+                            $count->propPrivate++;
                             $getMethodOrProperties = false;
                             $getPrivate = false;
                         }
                     } elseif ($hasTokenInfo && \T_FUNCTION == $token[0]) {
                         if ($getPublic) {
-                            $count['funcPublic']++;
+                            $count->funcPublic++;
                             $getMethodOrProperties = false;
                             $getPublic = false;
                         } elseif ($getProtected) {
-                            $count['funcProtected']++;
+                            $count->funcProtected++;
                             $getMethodOrProperties = false;
                             $getProtected = false;
                         } elseif ($getPrivate) {
-                            $count['funcPrivate']++;
+                            $count->funcPrivate++;
                             $getMethodOrProperties = false;
                             $getPrivate = false;
                         }

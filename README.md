@@ -14,7 +14,7 @@ Usage
 `$ ./bin/console stat:class-author <email> <project-src>` - counts classes/interfaces/trait
 created by some developer in project.
 
-`$ ./bin/console stat:command-name <full-class-name>  <project-src>` - analyzes the class, 
+`$ ./bin/console stat:analyzer-class <full-class-name>` - analyzes the class, 
 displays the class type and the number of properties and methods in the class.
 
 Code style fixer
